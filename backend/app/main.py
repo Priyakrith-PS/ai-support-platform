@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.security import OAuth2PasswordBearer
 
-from app.api import users, auth, tickets
+from app.api import users, auth, tickets, ai, feedback
 from app.db.session import engine
 from app.db.base import Base
 
@@ -24,7 +24,8 @@ Base.metadata.create_all(bind=engine)
 app.include_router(users.router, tags=["Users"])
 app.include_router(auth.router,  tags=["Auth"])
 app.include_router(tickets.router,  tags=["Tickets"])
-
+app.include_router(ai.router)
+app.include_router(feedback.router)
 
 @app.get("/")
 def root():
