@@ -174,3 +174,27 @@ def get_conversation(
     conversation.sort(key=lambda x: x["created_at"])
 
     return conversation
+
+
+@router.patch("/{ticket_id}/status")
+def update_ticket_status(
+    ticket_id: str,
+    status: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+
+    ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
+
+    if not ticket:
+        raise HTTPException(status_code=404, detail="Ticket not found")
+
+    if ticket.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    ticket.status = status
+
+    db.commit()
+    db.refresh(ticket)
+
+    return {"status": "updated", "ticket_status": ticket.status}
