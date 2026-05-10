@@ -46,7 +46,10 @@ export default function Dashboard() {
         </div>
 
         <button
-          onClick={() => navigate("/chat")}
+          onClick={() => {
+            localStorage.removeItem("chat_session");
+            navigate("/chat");
+          }}
           className="bg-blue-600 text-white px-4 py-2 rounded mb-6"
         >
           Start AI Chat
@@ -60,13 +63,18 @@ export default function Dashboard() {
               key={ticket.id}
               className="border p-3 rounded mb-2 flex justify-between"
             >
-              <span>{ticket.title}</span>
+              <div>
+                <div className="font-semibold">{ticket.title}</div>
+                <div className="text-sm text-gray-500">
+                  Status: {ticket.status} | Priority: {ticket.priority}
+                </div>
+              </div>
 
               <button
                 onClick={() => navigate(`/ticket/${ticket.id}`)}
                 className="text-blue-600"
               >
-                Open
+                View
               </button>
             </div>
           ))}

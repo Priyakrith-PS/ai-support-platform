@@ -21,10 +21,13 @@ function Login() {
       );
 
       localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("role", res.data.role); // 🔥 ADD THIS
 
-      console.log("Login success");
-
-      navigate("/dashboard"); // ⭐ redirect
+      if (res.data.role === "support") {
+        navigate("/support");
+      } else {
+        navigate("/dashboard");
+      } // ⭐ redirect
     } catch (err) {
       console.error(err);
       alert("Login failed");

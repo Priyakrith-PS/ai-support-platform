@@ -1,0 +1,3 @@
+[{"instruction": "My printer is not working", "input": "", "output": "Check the printer connection, restart the device, and ensure drivers are updated."}
+{"instruction": "How to create a PowerPoint presentation?", "input": "", "output": "Open PowerPoint, select New, choose a template or blank presentation, and start adding slides."}
+{"instruction": "SQL Server not connecting to instance", "input": "", "output": "Check if SQL Server service is running, verify instance name, and ensure network protocols are enabled."}]

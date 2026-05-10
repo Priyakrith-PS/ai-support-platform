@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Text, Float, DateTime, ForeignKey
+from sqlalchemy import Column, String, Text, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 
@@ -11,11 +11,13 @@ class AIResponse(Base):
     id = Column(String(36), primary_key=True, index=True)
 
     ticket_id = Column(String(36), ForeignKey("tickets.id"))
-    message_id = Column(String(36), ForeignKey("ticket_messages.id"))
+
+    # 🔥 FIXED: removed FK constraint
+    message_id = Column(String(36))
 
     response = Column(Text, nullable=False)
 
-    confidence = Column(Float)
+    confidence = Column(Text)
 
     created_at = Column(
         DateTime,

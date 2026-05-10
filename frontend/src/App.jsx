@@ -6,6 +6,8 @@ import TicketView from "./pages/TicketView";
 import CreateTicket from "./pages/CreateTicket";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Chat from "./pages/Chat";
+import SupportDashboard from "./pages/SupportDashboard";
+import { Navigate } from "react-router-dom";
 
 function App() {
   return (
@@ -17,7 +19,11 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              {localStorage.getItem("role") === "user" ? (
+                <Dashboard />
+              ) : (
+                <Navigate to="/support" />
+              )}
             </ProtectedRoute>
           }
         />
@@ -45,6 +51,16 @@ function App() {
             <ProtectedRoute>
               <Chat />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/support"
+          element={
+            localStorage.getItem("role") === "support" ? (
+              <SupportDashboard />
+            ) : (
+              <Navigate to="/dashboard" />
+            )
           }
         />
       </Routes>

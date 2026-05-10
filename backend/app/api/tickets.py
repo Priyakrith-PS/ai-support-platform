@@ -19,6 +19,16 @@ from app.schemas.conversation import ConversationMessage
 router = APIRouter(prefix="/tickets", tags=["Tickets"])
 
 
+@router.get("/all")
+def get_all_tickets(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    if current_user.role != "support":
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    return db.query(Ticket).order_by(Ticket.created_at.desc()).all()
+
 # ✅ Create Ticket
 @router.post("/", response_model=TicketOut)
 def create_ticket(
@@ -184,16 +194,15 @@ def update_ticket_status(
     current_user: User = Depends(get_current_user),
 ):
 
+    if current_user.role != "support":
+        raise HTTPException(status_code=403, detail="Only support can update tickets")
+
     ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
 
     if not ticket:
         raise HTTPException(status_code=404, detail="Ticket not found")
 
-    if ticket.user_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Not authorized")
-
     ticket.status = status
-
     db.commit()
     db.refresh(ticket)
 
